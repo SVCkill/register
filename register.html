@@ -2,89 +2,118 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Logowanie / Rejestracja</title>
   <style>
-    /* Tło i responsywny układ */
+    /* Globalne ustawienia */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
     body {
-      background: linear-gradient(135deg, #72edf2, #5151e5);
+      background: linear-gradient(135deg, #6dd5ed, #2193b0);
       display: flex;
       align-items: center;
       justify-content: center;
       height: 100vh;
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Roboto', sans-serif;
     }
     /* Kontener formularza */
-    .container {
-      background: #fff;
+    .auth-container {
+      background: #ffffff;
+      width: 360px;
       padding: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-      width: 350px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
       text-align: center;
-      animation: fadeInUp 1s ease-out;
+      animation: popIn 0.8s ease-out;
     }
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes popIn {
+      0% {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
     }
-    /* Styl inputów */
+    h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+      color: #333;
+    }
+    /* Formularz */
+    form {
+      display: flex;
+      flex-direction: column;
+    }
     input {
-      width: 90%;
+      padding: 0.8rem;
       margin-bottom: 1rem;
-      padding: 0.75rem;
       border: 2px solid #ddd;
-      border-radius: 5px;
-      outline: none;
-      transition: 0.3s ease;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border 0.3s, box-shadow 0.3s;
     }
     input:focus {
-      border-color: #5151e5;
-      box-shadow: 0 0 8px rgba(81, 81, 229, 0.5);
+      border-color: #2193b0;
+      box-shadow: 0 0 8px rgba(33, 147, 176, 0.4);
+      outline: none;
     }
-    /* Przyciski */
-    button {
-      width: 100%;
-      padding: 0.75rem;
-      background: #5151e5;
-      border: none;
-      border-radius: 5px;
-      color: #fff;
+    .btn {
+      padding: 0.8rem;
       font-size: 1rem;
+      border: none;
+      border-radius: 8px;
       cursor: pointer;
-      transition: 0.3s;
+      transition: background 0.3s, transform 0.2s;
       margin-bottom: 10px;
     }
-    button:hover {
-      background: #3a3acb;
+    .btn-login {
+      background: #2193b0;
+      color: #fff;
+    }
+    .btn-login:hover {
+      background: #1a7d95;
       transform: scale(1.02);
     }
-    /* Komunikaty */
-    p {
-      font-weight: bold;
+    .btn-register {
+      background: #fff;
+      color: #2193b0;
+      border: 2px solid #2193b0;
+    }
+    .btn-register:hover {
+      background: #e0f7fa;
+      transform: scale(1.02);
+    }
+    /* Komunikat */
+    #message {
+      margin-top: 1rem;
+      font-weight: 500;
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
+  <div class="auth-container">
     <h2>Logowanie / Rejestracja</h2>
     <form id="authForm">
       <input type="email" id="email" placeholder="Email" required>
       <input type="password" id="password" placeholder="Hasło" required>
-      <button type="submit">Zaloguj</button>
-      <button type="button" id="registerBtn">Zarejestruj</button>
+      <button type="submit" class="btn btn-login">Zaloguj</button>
+      <button type="button" class="btn btn-register" id="registerBtn">Zarejestruj</button>
     </form>
     <p id="message"></p>
   </div>
 
   <script type="module">
-    // Import Firebase
+    // Importowanie modułów Firebase
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 
-    // Konfiguracja Firebase (zmień na własne wartości!)
+    // Konfiguracja Firebase - Upewnij się, że wprowadziłeś poprawne dane!
     const firebaseConfig = {
       apiKey: "AIzaSyBbPgGvwb0UImK5CVBaCeXLGKxrGcmCHy8",
       authDomain: "ice-panel-e5f25.firebaseapp.com",
@@ -99,15 +128,16 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth();
 
-    // Obsługa formularza logowania
+    const message = document.getElementById("message");
+
+    // Obsługa logowania
     document.getElementById("authForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value;
-      const message = document.getElementById("message");
-
+      message.textContent = "";
       try {
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        await signInWithEmailAndPassword(auth, email, password);
         message.style.color = "#27ae60";
         message.textContent = "Zalogowano pomyślnie!";
       } catch (error) {
@@ -120,10 +150,9 @@
     document.getElementById("registerBtn").addEventListener("click", async () => {
       const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value;
-      const message = document.getElementById("message");
-
+      message.textContent = "";
       try {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        await createUserWithEmailAndPassword(auth, email, password);
         message.style.color = "#27ae60";
         message.textContent = "Rejestracja zakończona sukcesem!";
       } catch (error) {
@@ -132,6 +161,5 @@
       }
     });
   </script>
-
 </body>
 </html>
