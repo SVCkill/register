@@ -1,113 +1,132 @@
-<!DOCTYPE html>
-<html lang="pl">
-<head>
+<html lang="pl"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Logowanie / Rejestracja</title>
-  <!-- Dodajemy czcionkę z Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&amp;display=swap" rel="stylesheet">
   <style>
-    /* Globalne ustawienia */
+    /* Reset */
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
+
     body {
-      background: linear-gradient(135deg, #667eea, #764ba2);
+      font-family: 'Orbitron', sans-serif;
+      background: #0f0f0f;
+      color: #fff;
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       height: 100vh;
-      font-family: 'Roboto', sans-serif;
-      color: #333;
+      overflow: hidden;
     }
+
+    /* Tło z efektami neonowymi */
+    .background {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(0, 255, 170, 0.2) 10%, transparent 60%), 
+                  radial-gradient(circle, rgba(255, 0, 128, 0.2) 20%, transparent 70%);
+      filter: blur(80px);
+    }
+
     /* Kontener formularza */
     .auth-container {
-      background: #fff;
-      width: 360px;
-      padding: 2rem;
-      border-radius: 16px;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+      background: rgba(20, 20, 20, 0.95);
+      padding: 2.5rem;
+      width: 400px;
       text-align: center;
-      animation: popIn 0.8s ease-out;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 255, 170, 0.5);
+      backdrop-filter: blur(10px);
+      position: relative;
+      z-index: 2;
     }
-    @keyframes popIn {
-      0% {
-        transform: scale(0.8);
-        opacity: 0;
-      }
-      100% {
-        transform: scale(1);
-        opacity: 1;
-      }
-    }
+
     h2 {
       font-size: 1.8rem;
+      color: #00ffaa;
+      text-shadow: 0 0 8px #00ffaa;
       margin-bottom: 1.5rem;
-      font-weight: 700;
     }
-    /* Formularz */
+
     form {
       display: flex;
       flex-direction: column;
     }
+
     input {
+      background: transparent;
+      border: 2px solid #00ffaa;
       padding: 0.8rem;
-      margin-bottom: 1rem;
-      border: 2px solid #e0e0e0;
-      border-radius: 8px;
       font-size: 1rem;
-      transition: border 0.3s, box-shadow 0.3s;
+      border-radius: 6px;
+      color: #fff;
+      text-align: center;
+      margin-bottom: 1rem;
+      transition: 0.3s;
     }
+
     input:focus {
-      border-color: #764ba2;
-      box-shadow: 0 0 8px rgba(118, 75, 162, 0.4);
+      border-color: #ff0080;
+      box-shadow: 0 0 10px #ff0080;
       outline: none;
     }
+
     .btn {
-      padding: 0.8rem;
+      padding: 0.9rem;
       font-size: 1rem;
-      border: none;
-      border-radius: 8px;
+      font-weight: bold;
+      border-radius: 6px;
       cursor: pointer;
-      transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+      transition: 0.3s;
+      border: none;
+      color: #0f0f0f;
       margin-bottom: 10px;
     }
+
     .btn-login {
-      background: #764ba2;
-      color: #fff;
-      box-shadow: 0 4px 12px rgba(118, 75, 162, 0.3);
+      background: #00ffaa;
+      box-shadow: 0 0 10px #00ffaa;
     }
+
     .btn-login:hover {
-      background: #5e3a8c;
-      transform: scale(1.02);
-      box-shadow: 0 6px 16px rgba(94, 58, 140, 0.4);
+      background: #00cc88;
+      box-shadow: 0 0 15px #00ffaa;
+      transform: scale(1.05);
     }
+
     .btn-register {
-      background: #fff;
-      color: #764ba2;
-      border: 2px solid #764ba2;
+      background: #ff0080;
+      box-shadow: 0 0 10px #ff0080;
     }
+
     .btn-register:hover {
-      background: #f3e8fa;
-      transform: scale(1.02);
+      background: #cc0066;
+      box-shadow: 0 0 15px #ff0080;
+      transform: scale(1.05);
     }
-    /* Komunikat */
-    #message {
-      margin-top: 1rem;
-      font-weight: 500;
+
+    /* Animacja neonowego efektu */
+    @keyframes flicker {
+      0% { opacity: 1; }
+      50% { opacity: 0.8; }
+      100% { opacity: 1; }
     }
   </style>
 </head>
 <body>
 
+  <div class="background"></div>
+
   <div class="auth-container">
-    <h2>Logowanie / Rejestracja</h2>
+    <h2>ICE Panel ( ´▽`ʃ♡ƪ )</h2>
     <form id="authForm">
-      <input type="email" id="email" placeholder="Email" required>
-      <input type="password" id="password" placeholder="Hasło" required>
-      <button type="submit" class="btn btn-login">Zaloguj</button>
+      <input type="email" id="email" placeholder="Wprowadź e-mail" required="">
+      <input type="password" id="password" placeholder="Hasło" required="">
+      
       <button type="button" class="btn btn-register" id="registerBtn">Zarejestruj</button>
     </form>
     <p id="message"></p>
@@ -139,10 +158,10 @@
       message.textContent = "";
       try {
         await signInWithEmailAndPassword(auth, email, password);
-        message.style.color = "#27ae60";
+        message.style.color = "#00ffaa";
         message.textContent = "Zalogowano pomyślnie!";
       } catch (error) {
-        message.style.color = "#e74c3c";
+        message.style.color = "#ff0080";
         message.textContent = "Błąd logowania: " + error.message;
       }
     });
@@ -153,13 +172,14 @@
       message.textContent = "";
       try {
         await createUserWithEmailAndPassword(auth, email, password);
-        message.style.color = "#27ae60";
+        message.style.color = "#00ffaa";
         message.textContent = "Rejestracja zakończona sukcesem!";
       } catch (error) {
-        message.style.color = "#e74c3c";
+        message.style.color = "#ff0080";
         message.textContent = "Błąd rejestracji: " + error.message;
       }
     });
   </script>
-</body>
-</html>
+
+
+</body></html>
