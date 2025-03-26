@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rejestracja</title>
+  <style>
+    /* Tło i wycentrowanie zawartości */
+    body {
+      background: linear-gradient(135deg, #72edf2, #5151e5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    /* Kontener formularza z animacją pojawiania się */
+    .container {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      width: 350px;
+      animation: fadeInUp 1s ease-out;
+    }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    /* Nagłówek formularza */
+    h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+      color: #333;
+    }
+    /* Stylizacja formularza */
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+    /* Stylizacja pól input */
+    input {
+      margin-bottom: 1rem;
+      padding: 0.75rem;
+      border: 2px solid #ddd;
+      border-radius: 5px;
+      outline: none;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    input:focus {
+      border-color: #5151e5;
+      box-shadow: 0 0 8px rgba(81, 81, 229, 0.5);
+    }
+    /* Stylizacja przycisku */
+    button {
+      padding: 0.75rem;
+      background: #5151e5;
+      border: none;
+      border-radius: 5px;
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+    button:hover {
+      background: #3a3acb;
+      transform: scale(1.02);
+    }
+    /* Komunikaty */
+    p {
+      text-align: center;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Rejestracja</h2>
+    <form id="registerForm">
+      <input type="text" id="username" placeholder="Nazwa użytkownika" required>
+      <input type="email" id="email" placeholder="Email" required>
+      <input type="password" id="password" placeholder="Hasło" required>
+      <button type="submit">Zarejestruj</button>
+    </form>
+    <p id="message"></p>
+  </div>
+
+  <script type="module">
+    // Importowanie modułów Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+    import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+
+    // Konfiguracja Firebase - wstaw swoje dane z Firebase Console
+const firebaseConfig = {
+  apiKey: "AIzaSyBbPgGvwb0UImK5CVBaCeXLGKxrGcmCHy8",
+  authDomain: "ice-panel-e5f25.firebaseapp.com",
+  projectId: "ice-panel-e5f25",
+storageBucket: "ice-panel-e5f25.appspot.com",
+  messagingSenderId: "612268971819",
+  appId: "1:612268971819:web:7ab3b4fee5fa089837d76e",
+  measurementId: "G-HN35XNY3P8"
+};
+    // Inicjalizacja Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth();
+    const db = getFirestore();
+
+    // Obsługa formularza rejestracji
+    document.getElementById("registerForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const username = document.getElementById("username").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+      const message = document.getElementById("message");
+      message.textContent = "";
+
+      if (username.length < 3) {
+        message.style.color = "#e74c3c";
+        message.textContent = "Nazwa użytkownika musi mieć co najmniej 3 znaki.";
+        return;
+      }
+
+      try {
+        // Sprawdzenie, czy nazwa użytkownika jest już zajęta
+        const usernameRef = doc(db, "usernames", username);
+        const usernameSnapshot = await getDoc(usernameRef);
+        if (usernameSnapshot.exists()) {
+          throw new Error("Nazwa użytkownika jest już zajęta.");
+        }
+
+        // Rejestracja użytkownika w Firebase Authentication
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        // Zapisanie nazwy użytkownika w Firestore
+        await setDoc(usernameRef, { uid: user.uid });
+        await setDoc(doc(db, "users", user.uid), {
+          username: username,
+          email: email
+        });
+
+        message.style.color = "#27ae60";
+        message.textContent = "Rejestracja udana!";
+        document.getElementById("registerForm").reset();
+      } catch (error) {
+        message.style.color = "#e74c3c";
+        message.textContent = error.message;
+      }
+    });
+  </script>
+</body>
+</html>
