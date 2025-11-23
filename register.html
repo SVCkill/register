@@ -1,185 +1,326 @@
-<html lang="pl"><head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Logowanie / Rejestracja</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&amp;display=swap" rel="stylesheet">
-  <style>
-    /* Reset */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+<html><head>
+<style>
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
 
-    body {
-      font-family: 'Orbitron', sans-serif;
-      background: #0f0f0f;
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      overflow: hidden;
-    }
+:root {
+  --bg: rgb(28, 28, 28);
+}
 
-    /* Tło z efektami neonowymi */
-    .background {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle, rgba(0, 255, 170, 0.2) 10%, transparent 60%), 
-                  radial-gradient(circle, rgba(255, 0, 128, 0.2) 20%, transparent 70%);
-      filter: blur(80px);
-    }
+.header img { width: 35%; padding: 20px 40px 20px 40px; }
+body { display: grid;
+  place-content: center;
+  min-height: 100vh;
+  background-image: url("https://operation-poweroff.com/assets/background.png");
+  background-color: #1C1C1C;
+  background-position: right 0% bottom 60%;
+  background-repeat: no-repeat;
+  background-size: 70%;
+  display: flex;
+  flex-direction: column;
+  margin-top: auto;
+}
 
-    /* Kontener formularza */
-    .auth-container {
-      background: rgba(20, 20, 20, 0.95);
-      padding: 2.5rem;
-      width: 400px;
-      text-align: center;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0, 255, 170, 0.5);
-      backdrop-filter: blur(10px);
-      position: relative;
-      z-index: 2;
-    }
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
 
-    h2 {
-      font-size: 1.8rem;
-      color: #00ffaa;
-      text-shadow: 0 0 8px #00ffaa;
-      margin-bottom: 1.5rem;
-    }
+.container-box {
+  display: flex;
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center; 
+  gap: 20px; 
+  width: 60%; 
+}
 
-    form {
-      display: flex;
-      flex-direction: column;
-    }
+.content {
+  flex: 1 1 100%;
+  margin: 10px 20px 10px 20px;
+  padding: 20px;
+  color: white;
+  background: rgb(28 28 28 / 15%);
+  border-radius: 15px;
+}
 
-    input {
-      background: transparent;
-      border: 2px solid #00ffaa;
-      padding: 0.8rem;
-      font-size: 1rem;
-      border-radius: 6px;
-      color: #fff;
-      text-align: center;
-      margin-bottom: 1rem;
-      transition: 0.3s;
-    }
+.content h1 {
+  font-weight: 700;
+  font-size: 28px;
+  font-family: "Open Sans", sans-serif;
+  text-transform: uppercase;
+}
 
-    input:focus {
-      border-color: #ff0080;
-      box-shadow: 0 0 10px #ff0080;
-      outline: none;
-    }
+.content p {
+  font-weight: 300;
+  font-size: 18px;
+  font-family: "Open Sans", sans-serif;
+}
 
-    .btn {
-      padding: 0.9rem;
-      font-size: 1rem;
-      font-weight: bold;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: 0.3s;
-      border: none;
-      color: #0f0f0f;
-      margin-bottom: 10px;
-    }
+.box {
+  width: 90%;
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+  background-color: #363636;
+  margin: 10px;
+  padding: 15px;
+  border-radius: 15px;
+}
 
-    .btn-login {
-      background: #00ffaa;
-      box-shadow: 0 0 10px #00ffaa;
-    }
+.text-box h2 {
+  color: white;
+  font-weight: 700;
+  font-size: 24px;
+  font-family: "Open Sans", sans-serif;
+  text-transform: uppercase;
+  line-height: 1.5;
+}
 
-    .btn-login:hover {
-      background: #00cc88;
-      box-shadow: 0 0 15px #00ffaa;
-      transform: scale(1.05);
-    }
+.wrapper {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  margin-right: 20px;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
 
-    .btn-register {
-      background: #ff0080;
-      box-shadow: 0 0 10px #ff0080;
-    }
+.outer {
+  width: 100px;
+  height: 100px;
+  box-shadow: 0px 0px 0px 0 rgb(8, 8, 8), 0px 0px 0px 2px black;
+  border-radius: 50%;
+  padding: 10px;
+}
 
-    .btn-register:hover {
-      background: #cc0066;
-      box-shadow: 0 0 15px #ff0080;
-      transform: scale(1.05);
-    }
+.inner {
+  width: 80px;
+  height: 80px;
+  box-shadow: 0px 0px 2px 0 rgb(8, 8, 8), inset 3px 3px 40px black;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-    /* Animacja neonowego efektu */
-    @keyframes flicker {
-      0% { opacity: 1; }
-      50% { opacity: 0.8; }
-      100% { opacity: 1; }
-    }
-  </style>
+#number, #number-301, #number-7 {
+  color: white;
+  font-size: 2rem; 
+  font-family: "Open Sans", sans-serif;
+  font-weight: 700;
+}
+
+#number-users {
+  color: white;
+  font-size: 2rem; 
+  font-family: "Open Sans", sans-serif;
+  font-weight: 700;
+}
+
+
+#number-counter-2 {
+  color: white;
+  font-size: 2rem; 
+  font-family: "Open Sans", sans-serif;
+  font-weight: 700;
+}
+
+svg {
+  width: 100px; 
+  height: 100px;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+circle {
+  cx: 50; 
+  cy: 50;
+  r: 45; 
+  fill: none;
+  stroke: url(#GradientColor);
+  stroke-width: 11px; 
+  stroke-linecap: round;
+  stroke-dasharray: 628; 
+  stroke-dashoffset: 628;
+  animation: anim 1s ease forwards;
+  transform: rotateZ(-90deg);
+  transform-origin: center;
+}
+
+@keyframes anim {
+  100% {
+    stroke-dashoffset: 250; /* Adjust to match new size */
+  }
+}
+
+.slider {
+  background-color: white;
+  padding: 2em;
+  overflow: hidden;
+  margin-top: 40px;
+}
+
+@keyframes slides {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-58%);
+  }
+}
+
+.slider {
+  background-color: white;
+  padding: 2em;
+  overflow: hidden;
+  margin-top: 40px;
+}
+
+.logos {
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+}
+
+.logos:before, .logos:after {
+  position: absolute;
+  top: 0;
+  width: 250px;
+  height: 100%;
+  z-index: 2;
+}
+
+.logos:before {
+  left: 0;
+  background: linear-gradient(to left, rgba(255,255,255,0), rgb(255, 255, 255));
+}
+
+.logos:after {
+  right: 0;
+  background: linear-gradient(to right, rgba(255,255,255,0), rgb(255, 255, 255));
+}
+
+.logo_items {
+  display: inline-block;
+  animation: 35s slides infinite linear;
+}
+
+.logos:hover .logo_items {
+  animation-play-state: paused;
+}
+
+.logo_items img{
+  height: 100px;
+  padding-right: 3em;
+}
+
+/* Media Queries for responsiveness */
+@media (max-width: 1024px) {
+  .container {
+    width: 100%;
+  }
+  .box {
+    flex: 1 1 calc(50% - 20px); /* 2 columns on tablet */
+  }
+  .header img {
+    width: 50%; /* Adjust logo size */
+  }
+}
+
+@media (max-width: 768px) {
+  .box {
+    flex: 1 1 90%; /* Stack in single column */
+    display: flex;
+    flex-direction: column;
+  }
+  .text-box h2 {
+    margin-top: 20px;
+  }
+  .header img {
+    width: 70%;
+  }
+  .container-box {
+   width: 100%; /* Make it take full width */
+ }
+
+  .wrapper{
+    margin-right: 0px;
+  }
+}
+
+@media (max-width: 480px) {
+  .content h1 {
+    font-size: 20px; /* Smaller font on mobile */
+  }
+  .content p {
+    font-size: 16px;
+  }
+  .slider img {
+    width: 40px; /* Adjust slider image size */
+    height: 40px;
+  }
+}
+</style>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Operation PowerOFF</title>
+<link rel="icon" type="image/x-icon" href="https://operation-poweroff.com/assets/favicon.ico">
 </head>
+
 <body>
-
-  <div class="background"></div>
-
-  <div class="auth-container">
-    <h2>ICE Panel ( ´▽`ʃ♡ƪ )</h2>
-    <form id="authForm">
-      <input type="email" id="email" placeholder="Wprowadź e-mail" required="">
-      <input type="password" id="password" placeholder="Hasło" required="">
-      
-      <button type="button" class="btn btn-register" id="registerBtn">Zarejestruj</button>
-    </form>
-    <p id="message"></p>
-  </div>
-
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyBbPgGvwb0UImK5CVBaCeXLGKxrGcmCHy8",
-      authDomain: "ice-panel-e5f25.firebaseapp.com",
-      projectId: "ice-panel-e5f25",
-      storageBucket: "ice-panel-e5f25.appspot.com",
-      messagingSenderId: "612268971819",
-      appId: "1:612268971819:web:7ab3b4fee5fa089837d76e",
-      measurementId: "G-HN35XNY3P8"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth();
-
-    const message = document.getElementById("message");
-
-    document.getElementById("authForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value;
-      message.textContent = "";
-      try {
-        await signInWithEmailAndPassword(auth, email, password);
-        message.style.color = "#00ffaa";
-        message.textContent = "Zalogowano pomyślnie!";
-      } catch (error) {
-        message.style.color = "#ff0080";
-        message.textContent = "Błąd logowania: " + error.message;
-      }
-    });
-
-    document.getElementById("registerBtn").addEventListener("click", async () => {
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value;
-      message.textContent = "";
-      try {
-        await createUserWithEmailAndPassword(auth, email, password);
-        message.style.color = "#00ffaa";
-        message.textContent = "Rejestracja zakończona sukcesem!";
-      } catch (error) {
-        message.style.color = "#ff0080";
-        message.textContent = "Błąd rejestracji: " + error.message;
-      }
-    });
-  </script>
-
+    <div class="container">
+      <div class="header">
+        <img src="https://operation-poweroff.com/assets/PowerOFF.png" alt="logo">
+      </div>  
+      <div class="container-box">
+        <div class="content">
+          <h1>Operation PowerOff</h1>
+          <p>This website has been seized as part of Operation PowerOFF. Operation PowerOFF is an international law enforcement effort focused on shutting down DDoS-for-hire services, including booters and stressers. 
+          <br>
+          <br>
+          DDoS attacks are illegal. For years law enforcement agencies around the world have seized booter databases, arrested administrators, and collected information relating to the operation of these services, including information on the customers of these services. Anyone operating or utilizing DDoS services is subject to investigation, prosecution, and other law enforcement action.
+          </p>
+        </div>
+       </div>
+      </div>
+      <div class="slider">
+        <div class="logos">
+          <div class="logo_items">
+          
+          <img src="https://operation-poweroff.com/assets/logoUS-FBI.svg" alt="Federal Bureau of Investigation">
+          <img src="https://operation-poweroff.com/assets/logoUS-DOJ.png" alt="Department of Justice">
+          <img src="https://operation-poweroff.com/assets/logoUS-HSI.png" alt="Department of Homeland Security">
+          <img src="https://operation-poweroff.com/assets/logoUS-DOD.png" alt="Department of Defence">
+          <img src="https://operation-poweroff.com/assets/logoUS-DCIS.jpg" alt="Defense Criminal Investigative Service (DCIS)">
+          <img src="https://operation-poweroff.com/assets/logoEU.svg" alt="Europol">
+          <img src="https://operation-poweroff.com/assets/logoDE-BKA.png" alt="Bundeskriminalamt">
+          <img src="https://operation-poweroff.com/assets/logoDE-HLKA.png" alt="Hessisches Landeskriminalamt">                
+          <img src="https://operation-poweroff.com/assets/logoDE-GStA.png" alt="Generalstaatsanwaltschaft Frankfurt am Main">                
+          <img src="https://operation-poweroff.com/assets/logoFR-OFAC.png" alt="OFAC France">
+          <img src="https://operation-poweroff.com/assets/logoPT-PSP.png" alt="Polícia de Segurança Pública">
+          <img src="https://operation-poweroff.com/assets/logoPT-PJ.svg" alt="Polícia Judiciária">
+          <img src="https://operation-poweroff.com/assets/logoUK.png" alt="National Crime Agency">
+          <img src="https://operation-poweroff.com/assets/logoPL.png" alt="Centralne Biuro Zwalczania Cyberprzestępczości">
+          <img src="https://operation-poweroff.com/assets/logoLV.png" alt="Police Latvia">
+          <img src="https://operation-poweroff.com/assets/logoBR.png" alt="Policia Federal Brasil">
+          <img src="https://operation-poweroff.com/assets/logoNL.png" alt="Nationale Politie">
+          <img src="https://operation-poweroff.com/assets/logoFI-KRP.png" alt="Poliisi Keskusrikospoliisi">
+          <img src="https://operation-poweroff.com/assets/logoSE.jpg" alt="Polisen">
+          <img src="https://operation-poweroff.com/assets/logoJP-NPA.png" alt="National Police Agency Japan">
+          <img src="https://operation-poweroff.com/assets/logoCA-RCMP.png" alt="Royal Canadian Mounted Police">
+          <img src="https://operation-poweroff.com/assets/logoAU-AFP.png" alt="Australian Federal Police">
+            </div>
+        </div>
+    </div>
 
 </body></html>
